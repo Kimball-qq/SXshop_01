@@ -157,7 +157,7 @@ STATICFILES_DIRS = (
 
 # 设置上传文件的路径
 MEDIA_URL="/media/"
-MEDIA_ROOT=os.path.join(BASE_DIR,"media")
+MEDIA_ROOT=(os.path.join(BASE_DIR,"media"),)
 
 
 AUTHENTICATION_BACKENDS = ('user.views.CustomBackend',)
@@ -196,7 +196,10 @@ APIKEY = "7e76fbb3ed6e37bd33e883fbab95eb2b"
 #登录成功后跳转到首页
 SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/index/'
 
+# 支付宝相关的key
 
-
-
+private_key_path = os.path.join(BASE_DIR, 'apps/trade/keys/private_key_2048.txt')
+ali_public_key_path = os.path.join(BASE_DIR, 'apps/trade/keys/ali_public_key_2048.txt')
+#沙箱里面的appid值
+appid = '2021000116669532'
 

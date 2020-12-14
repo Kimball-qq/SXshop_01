@@ -10,8 +10,8 @@ from rest_framework.authtoken.views import obtain_auth_token
 from rest_framework_jwt.views import obtain_jwt_token
 from user.views import SmsCodeViewset,UserViewset
 from user_operation.views import UserFavViewset,LeavingMessageViewset,AddressViewset
-from goods.views import GoodsListViewSet,CategoryViewSet
-from trade.views import ShoppingCartViewset,OrderViewset
+from goods.views import GoodsListViewSet,CategoryViewSet,BannerViewset
+from trade.views import ShoppingCartViewset,OrderViewset,AlipayView
 from django.views.generic import TemplateView
 
 router = DefaultRouter()
@@ -37,6 +37,11 @@ router.register(r'shopcarts', ShoppingCartViewset, basename="shopcarts")
 #配置订单URL
 router.register(r'orders', OrderViewset, basename="orders")
 
+# 配置首页轮播图的url
+router.register(r'banners', BannerViewset, basename="banners")
+
+
+
 urlpatterns = [
 
     path('xadmin/', xadmin.site.urls),
@@ -56,6 +61,9 @@ urlpatterns = [
     # jwt的认证接口
     path('login/',obtain_jwt_token),
 
-    re_path('^',include(router.urls))
-
+    re_path('^',include(router.urls)),
+    #支付宝支付
+    path('alipay/return/', AlipayView.as_view()),
+    # 首页
+    path('index/', TemplateView.as_view(template_name='index.html'),name='index')
 ]

@@ -1,5 +1,5 @@
 from rest_framework.views import APIView
-from goods.serializers import GoodsSerializer,CategorySerializer
+from goods.serializers import GoodsSerializer,CategorySerializer,BannerSerializer
 from .models import Goods,GoodsCategory,GoodsImage,GoodsCategoryBrand,Banner,HotSearchWords
 from rest_framework import generics
 from rest_framework import mixins
@@ -36,10 +36,8 @@ class GoodsPagination(PageNumberPagination):
 
 class GoodsListViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin,viewsets.GenericViewSet):
     '''
-    list:
-        商品列表，分页，搜索，过滤，排序
-    retrieve:
-        获取商品详情
+    list:商品列表，分页，搜索，过滤，排序
+    retrieve:获取商品详情
     '''
     #这里必须要定义一个默认的排序,否则会报错
     queryset = Goods.objects.all().order_by('id')
@@ -66,7 +64,12 @@ class CategoryViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets
     serializer_class = CategorySerializer
 
 
-
+class BannerViewset(mixins.ListModelMixin, viewsets.GenericViewSet):
+    """
+    首页轮播图
+    """
+    queryset = Banner.objects.all().order_by("index")
+    serializer_class = BannerSerializer
 
 
 

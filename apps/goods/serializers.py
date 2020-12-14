@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Goods,GoodsCategory,GoodsImage
+from .models import Goods,GoodsCategory,GoodsImage,Banner
 
 class CategorySerializer3(serializers.ModelSerializer):
     """三级分类"""
@@ -46,3 +46,8 @@ class GoodsSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class BannerSerializer(serializers.ModelSerializer):
+    '''轮播图'''
+    class Meta:
+        model = Banner
+        fields = "__all__"
