@@ -106,8 +106,8 @@ DATABASES = {
         'NAME': 'sxshop',        #数据库名字
         'USER': 'root',          #账号
         'PASSWORD': '123456',    #密码
-        'HOST': '39.103.172.179',     #IP
-        # 'HOST': '127.0.0.1',     #IP
+        # 'HOST': '39.103.172.179',     #IP
+        'HOST': '127.0.0.1',     #IP
         'PORT': '3306',          #端口
         # 这里引擎用innodb（默认myisam）
         # 因为后面第三方登录时，要求引擎为INNODB
@@ -115,6 +115,23 @@ DATABASES = {
         "OPTIONS": {"init_command": "SET default_storage_engine=INNODB;"}
     }
 }
+
+# redis缓存
+# CACHES = {
+#     "default": {
+#         "BACKEND": "django_redis.cache.RedisCache",
+#         "LOCATION": "redis://127.0.0.1:6379",
+#         "OPTIONS": {
+#             "CLIENT_CLASS": "django_redis.client.DefaultClient",
+#         }
+#     }
+# }
+#
+#
+# #缓存配置
+# REST_FRAMEWORK_EXTENSIONS = {
+#     'DEFAULT_CACHE_RESPONSE_TIMEOUT': 5   #5s过期，时间自己可以随便设定
+# }
 
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -151,13 +168,11 @@ USE_TZ = False
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, "static"),
-)
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 
 # 设置上传文件的路径
 MEDIA_URL="/media/"
-MEDIA_ROOT=(os.path.join(BASE_DIR,"media"),)
+MEDIA_ROOT=os.path.join(BASE_DIR,"media")
 
 
 AUTHENTICATION_BACKENDS = ('user.views.CustomBackend',)
@@ -202,4 +217,10 @@ private_key_path = os.path.join(BASE_DIR, 'apps/trade/keys/private_key_2048.txt'
 ali_public_key_path = os.path.join(BASE_DIR, 'apps/trade/keys/ali_public_key_2048.txt')
 #沙箱里面的appid值
 appid = '2021000116669532'
+
+
+
+
+
+
 

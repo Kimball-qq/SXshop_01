@@ -1,5 +1,6 @@
+from rest_framework.response import Response
 from rest_framework.views import APIView
-from goods.serializers import GoodsSerializer,CategorySerializer,BannerSerializer
+from goods.serializers import GoodsSerializer,CategorySerializer,BannerSerializer,IndexCategorySerializer
 from .models import Goods,GoodsCategory,GoodsImage,GoodsCategoryBrand,Banner,HotSearchWords
 from rest_framework import generics
 from rest_framework import mixins
@@ -8,6 +9,8 @@ from rest_framework import viewsets
 from rest_framework.pagination import PageNumberPagination
 from .filters import GoodsFilter
 from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework_extensions.cache.mixins import CacheResponseMixin
+from rest_framework.throttling import UserRateThrottle,AnonRateThrottle
 
 
 # class GoodsListView(APIView):
@@ -34,7 +37,7 @@ class GoodsPagination(PageNumberPagination):
 
 
 
-class GoodsListViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin,viewsets.GenericViewSet):
+class GoodsListViewSet(CacheResponseMixin,mixins.ListModelMixin, mixins.RetrieveModelMixin,viewsets.GenericViewSet):
     '''
     list:商品列表，分页，搜索，过滤，排序
     retrieve:获取商品详情
@@ -54,7 +57,15 @@ class GoodsListViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin,viewsets
     search_fields = ('name', 'goods_brief', 'goods_desc')
     #排序
     ordering_fields = ('sold_num', 'shop_price')
+    throttle_classes = (UserRateThrottle,AnonRateThrottle)
 
+    # 商品点击数 + 1
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        instance.click_num += 1
+        instance.save()
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
 
 class CategoryViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.GenericViewSet):
     '''
@@ -73,6 +84,13 @@ class BannerViewset(mixins.ListModelMixin, viewsets.GenericViewSet):
 
 
 
+class IndexCategoryViewset(mixins.ListModelMixin, viewsets.GenericViewSet):
+    """
+    首页商品分类数据
+    """
+    # 获取is_tab=True（导航栏）里面的分类下的商品数据
+    queryset = GoodsCategory.objects.filter(is_tab=True, name__in=["生鲜食品", "酒水饮料"])
+    serializer_class = IndexCategorySerializer
 
 
 

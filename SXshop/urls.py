@@ -10,7 +10,7 @@ from rest_framework.authtoken.views import obtain_auth_token
 from rest_framework_jwt.views import obtain_jwt_token
 from user.views import SmsCodeViewset,UserViewset
 from user_operation.views import UserFavViewset,LeavingMessageViewset,AddressViewset
-from goods.views import GoodsListViewSet,CategoryViewSet,BannerViewset
+from goods.views import GoodsListViewSet,CategoryViewSet,BannerViewset,IndexCategoryViewset
 from trade.views import ShoppingCartViewset,OrderViewset,AlipayView
 from django.views.generic import TemplateView
 
@@ -39,7 +39,8 @@ router.register(r'orders', OrderViewset, basename="orders")
 
 # 配置首页轮播图的url
 router.register(r'banners', BannerViewset, basename="banners")
-
+# 首页系列商品展示url
+router.register(r'indexgoods', IndexCategoryViewset, basename="indexgoods")
 
 
 urlpatterns = [

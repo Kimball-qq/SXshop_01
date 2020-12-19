@@ -1,5 +1,3 @@
-# apps/utils.py
-
 import json
 from datetime import datetime
 from Crypto.PublicKey import RSA
@@ -102,9 +100,7 @@ class AliPay(object):
     def sign(self, unsigned_string):
         # 开始计算签名
         key = self.app_private_key
-        #签名的对象
         signer = PKCS1_v1_5.new(key)
-        #生成签名
         signature = signer.sign(SHA256.new(unsigned_string))
         # base64 编码，转换为unicode表示并移除回车
         sign = encodebytes(signature).decode("utf8").replace("\n", "")
@@ -130,7 +126,7 @@ class AliPay(object):
 
 
 if __name__ == "__main__":
-    return_url = 'http://127.0.0.1:8000/?total_amount=100.00&timestamp=2017-08-15+23%3A53%3A34&sign=e9E9UE0AxR84NK8TP1CicX6aZL8VQj68ylugWGHnM79zA7BKTIuxxkf%2FvhdDYz4XOLzNf9pTJxTDt8tTAAx%2FfUAJln4WAeZbacf1Gp4IzodcqU%2FsIc4z93xlfIZ7OLBoWW0kpKQ8AdOxrWBMXZck%2F1cffy4Ya2dWOYM6Pcdpd94CLNRPlH6kFsMCJCbhqvyJTflxdpVQ9kpH%2B%2Fhpqrqvm678vLwM%2B29LgqsLq0lojFWLe5ZGS1iFBdKiQI6wZiisBff%2BdAKT9Wcao3XeBUGigzUmVyEoVIcWJBH0Q8KTwz6IRC0S74FtfDWTafplUHlL%2Fnf6j%2FQd1y6Wcr2A5Kl6BQ%3D%3D&trade_no=2017081521001004340200204115&sign_type=RSA2&auth_app_id=2016080600180695&charset=utf-8&seller_id=2088102170208070&method=alipay.trade.page.pay.return&app_id=2016080600180695&out_trade_no=20170202185&version=1.0'
+    return_url = 'https://openapi.alipay.com/gateway.do?timestamp=2013-01-01 08:08:08&method=alipay.trade.page.pay&app_id=16388&sign_type=RSA2&sign=ERITJKEIJKJHKKKKKKKHJEREEEEEEEEEEE&version=1.0&charset=GBK&biz_content=AlipayTradePageCreateandpayModel'
     o = urlparse(return_url)
     query = parse_qs(o.query)
     processed_query = {}
@@ -142,7 +138,7 @@ if __name__ == "__main__":
         # 沙箱里面的appid值
         appid="2021000116669532",
         #notify_url是异步的url
-        app_notify_url="http://39.103.172.179:8000/",
+        app_notify_url="http://39.103.172.179:8000/alipay/return/",
         # 我们自己商户的密钥
         app_private_key_path="../trade/keys/private_key_2048.txt",
         # 支付宝的公钥
@@ -165,7 +161,7 @@ if __name__ == "__main__":
         # 订单金额
         total_amount=100,
         #成功付款后跳转到的页面，return_url同步的url
-        # return_url="http://127.0.0.1:8000/"
+        return_url="http://127.0.0.1:8000/"
     )
     # 将生成的请求字符串拿到我们的url中进行拼接
     re_url = "https://openapi.alipaydev.com/gateway.do?{data}".format(data=url)
